@@ -1,0 +1,185 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+all_integrated_HAR <- readRDS("D:\\Shruti\\cancer\\INTEGRATION.rds")
+```
+```{r}
+library(Seurat)
+library(ggplot2)
+feature_plot <- FeaturePlot(all_integrated_HAR, features = c('CD14','CD3D','KRT5','THY1','CD79A','VWF','MS4A2','IL3RA'))
+feature_plot 
+ggsave(plot = feature_plot, filename = "D:\\Shruti\\cancer\\feature_plot.png", units = "in", height = 15, width = 20, dpi = 900)
+```
+```{r}
+feature_plot_2 <- FeaturePlot(all_integrated_HAR, features = c('ACKR1', 'RAMP2', 'SELE', 'VWF', 'PECAM1'))
+ggsave(plot = feature_plot_2, filename = "D:\\Shruti\\cancer\\feature_plot_2.png", units = "in", height = 15, width = 20, dpi = 900)
+feature_plot_2
+```
+```{r}
+feature_plot_3 <- FeaturePlot(all_integrated_HAR, features = c('LUM','COL3A1', 'DCN', 'COL1A1', 'CFD'))
+ggsave(plot = feature_plot_3, filename = "D:\\Shruti\\cancer\\feature_plot_3.png", units = "in", height = 15, width = 20, dpi = 900)
+feature_plot_3
+```
+```{r}
+feature_plot_4 <- FeaturePlot(all_integrated_HAR, features = c('CD69', 'CD52', 'CXCR4','PTPRC', 'HCST'))
+ggsave(plot = feature_plot_4, filename = "D:\\Shruti\\cancer\\feature_plot_4.png", units = "in", height = 15, width = 20, dpi = 900)
+feature_plot_4
+```
+```{r}
+feature_plot_5 <- FeaturePlot(all_integrated_HAR, features = c('KRT14', 'KRT5', 'S100A2', 'CTSA','SPRR1B'))
+ggsave(plot = feature_plot_5, filename = "D:\\Shruti\\cancer\\feature_plot_5.png", units = "in", height = 15, width = 20, dpi = 900)
+feature_plot_5
+```
+```{r}
+saveRDS(all_integrated_HAR, file = "D:\\Shruti\\cancer\\INTEGRATION_plots.rds")
+```
+
+```{r}
+top10 <- read.csv("D:\\Shruti\\cancer\\top10.csv")
+
+```
+
+
+```{r}
+
+view(all_integrated_HAR@meta.data)
+
+
+
+view(all_integrated_HAR@meta.data)
+
+library(dplyr)
+
+
+all_integrated_HAR$group_color <- case_when(grepl("^BM",all_integrated_HAR@meta.data$orig.ident)~"pink_BM", grepl("^GM",all_integrated_HAR@meta.data$orig.ident)~"green_GM",grepl("^scB",all_integrated_HAR@meta.data$orig.ident)~"blue_scB", TRUE ~ "grey") #to add a column in metadata acc to sample colors
+
+umap_color <- DimPlot(all_integrated_HAR, group.by = "group_color")
+ggsave(plot = umap_color, filename = "D:\\Shruti\\cancer\\umap_color.png", units = "in", height = 15, width = 20, dpi = 900)
+```
+```{r}
+all_integrated_HAR <- all_integrated_HAR%>%AddMetaData(object=., metadata = case_when(grepl("^BM",all_integrated_HAR@meta.data$orig.ident) ~ "BM",
+                                                                                      grepl("^GM",all_integrated_HAR@meta.data$orig.ident) ~ "GM",
+                                                                                      TRUE ~ "scB"),col.name = "sample_type")#to add a column in metadata according to samples
+View(all_integrated_HAR@meta.data)
+
+umap_final <- DimPlot(all_integrated_HAR, group.by = "sample_type")
+ggsave(plot = umap_final, filename = "D:\\Shruti\\cancer\\umap_final.png", units = "in", height = 15, width = 20, dpi = 900)                             
+umap_final                                                       
+  
+```
+```{r}
+endothelial <- DotPlot(all_integrated_HAR, features = c('CLU','ACKR1','CCL23','RGCC','PLVAP','INSR','IGFBP3','SAT1','CXCL12','SELE','CSF3','ICAM1','TAGLN','ACTA2','MYL9','CCL21','TFF3','MMRN1'))
+ggsave(plot = endothelial, filename = "D:\\Shruti\\cancer\\endothelial.png", units = "in", height = 10, width = 15, dpi = 900, bg = "white")
+endothelial
+
+endothelial_fp1 <- FeaturePlot(all_integrated_HAR, features = c('CLU','ACKR1','CCL23','RGCC','PLVAP','INSR','IGFBP3','SAT1','CXCL12'))
+ggsave(plot = endothelial_fp1, filename = "D:\\Shruti\\cancer\\endothelial_fp1.png", units = "in", height = 10, width = 15, dpi = 900)
+endothelial_fp1
+
+endothelial_fp2 <- FeaturePlot(all_integrated_HAR, features = c('SELE','CSF3','ICAM1','TAGLN','ACTA2','MYL9','CCL21','TFF3','MMRN1'))
+ggsave(plot = endothelial_fp2, filename = "D:\\Shruti\\cancer\\endothelial_fp2.png", units = "in", height = 10, width = 15, dpi = 900)
+endothelial_fp2
+```
+```{r}
+epithelial <- DotPlot(all_integrated_HAR, features = c('KRT14','KRT5','SFN','KRT15','DSP','FDCSP','IL36G','MMP12','ODAM','SLPI','CRNN','CNFN','TGM3','SPRR3','SBSN','MITF','DCT','PMEL','TYR','MLANA'))
+ggsave(plot = epithelial, filename = "D:\\Shruti\\cancer\\epithelial.png", units = "in", height = 10, width = 15, dpi = 900, bg = "white")
+epithelial
+
+epithelial_fp1 <- FeaturePlot(all_integrated_HAR, features = c('KRT14','KRT5','SFN','KRT15','DSP','FDCSP','IL36G','MMP12','ODAM'))
+ggsave(plot = epithelial_fp1, filename = "D:\\Shruti\\cancer\\epithelial_fp1.png", units = "in", height = 10, width = 15, dpi = 900)
+epithelial_fp1
+
+epithelial_fp2 <- FeaturePlot(all_integrated_HAR, features = c('SLPI','CRNN','CNFN','TGM3','SPRR3','SBSN','MITF','DCT','PMEL','TYR','MLANA'))
+ggsave(plot = epithelial_fp2, filename = "D:\\Shruti\\cancer\\epithelial_fp2.png", units = "in", height = 10, width = 15, dpi = 900)
+epithelial_fp2
+```
+```{r}
+fibroblast <- DotPlot(all_integrated_HAR, features = c('SPARCL1','PTGDS','PLAC9','CXCL13','CTHRC1','POSTN','APCDD1','DIO2','IGFBP2','CCL19','APOE','CYR61','CFD','GSN','APOD'))
+ggsave(plot = fibroblast, filename = "D:\\Shruti\\cancer\\fibroblast.png", units = "in", height = 10, width = 15, dpi = 900, bg = "white")
+fibroblast
+
+fibroblast_fp1 <- FeaturePlot(all_integrated_HAR, features = c('SPARCL1','PTGDS','PLAC9','CXCL13','CTHRC1','POSTN','APCDD1','DIO2'))
+ggsave(plot = fibroblast_fp1, filename = "D:\\Shruti\\cancer\\fibroblast_fp1.png", units = "in", height = 10, width = 15, dpi = 900)
+fibroblast_fp1
+
+fibroblast_fp2 <- FeaturePlot(all_integrated_HAR, features = c('IGFBP2','CCL19','APOE','CYR61','CFD','GSN','APOD'))
+ggsave(plot = fibroblast_fp2, filename = "D:\\Shruti\\cancer\\fibroblast_fp2.png", units = "in", height = 10, width = 15, dpi = 900)
+fibroblast_fp2
+```
+```{r}
+saveRDS(all_integrated_HAR, file = "D:\\Shruti\\cancer\\INTEGRATION_FINAL.rds")
+```
+
+```{r}
+all_integrated_HAR <- JoinLayers(all_integrated_HAR)
+all_integrated_HAR_markers_DEA <- FindAllMarkers(all_integrated_HAR, only.pos = TRUE)
+
+```
+```{r}
+saveRDS(all_integrated_HAR, file = "D:\\Shruti\\cancer\\INTEGRATION_FINAL.rds")
+```
+
+```{r}
+write.csv(all_integrated_HAR_markers_DEA, "D:\\Shruti\\cancer\\DE_markers.csv")
+```
+
+```{r}
+top_DE <- all_integrated_HAR_markers_DEA %>%
+    group_by(cluster) %>%
+    dplyr::filter(avg_log2FC > 1)
+
+top10_DE <- all_integrated_HAR_markers_DEA %>%
+    group_by(cluster) %>%
+    dplyr::filter(avg_log2FC > 1) %>%
+    slice_head(n = 10) %>%
+    ungroup() -> top10
+write.csv(top10_DE,"D:\\Shruti\\cancer\\top10_DEG.csv")
+
+heatmap <- DoHeatmap(all_integrated_HAR, features = top10$gene) + NoLegend() #heatmap for top 10 DEGs
+heatmap
+ggsave(plot = heatmap, filename = "D:\\Shruti\\cancer\\top10_heatmap.png", units = "in", height = 10, width = 15, dpi = 900)
+
+```
+
+```{r}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("dittoSeq")
+library(dittoSeq)
+bar_plot <- dittoBarPlot(
+    object = all_integrated_HAR,
+    var = "RNA_snn_res.0.06",
+    group.by = "sample_type") #to make a stacked bar plot
+
+ggsave(plot = bar_plot, filename = "D:\\Shruti\\cancer\\bar_plot.png", units = "in", height = 10, width = 15, dpi = 900)
+saveRDS(all_integrated_HAR, "D:\\Shruti\\cancer\\final.rds")
+```
+```{r}
+Immune_cells <- subset(x= all_integrated_HAR, idents = "0")
+DimPlot(Immune_cells, reduction = "umap", label = TRUE)
+```
+```{r}
+Immune_cells <- ScaleData(Immune_cells)
+Immune_cells <- RunPCA(Immune_cells, verbose = FALSE)
+Immune_cells <- FindNeighbors(Immune_cells, reduction = "pca", dims = 1:20)
+Immune_cells <- FindClusters(Immune_cells, resolution = 0.06)
+Immune_cells <- RunUMAP(Immune_cells, reduction = "pca", dims = 1:20)
+DimPlot(Immune_cells, reduction = "umap", label = TRUE)
+FeaturePlot(Immune_cells, features = c('CD69','CD52','PTPRC','HCST'))
+```
+```{r}
+bar_plot2 <- dittoBarPlot(
+    object = all_integrated_HAR,
+    var = "sample_type",
+    group.by = all_integrated_HAR@meta.data$seurat_clusters)
+
+ggsave(plot = bar_plot2, filename = "D:\\Shruti\\cancer\\bar_plot2.png", units = "in", height = 10, width = 15, dpi = 900)
+```
+
+
+```{r}

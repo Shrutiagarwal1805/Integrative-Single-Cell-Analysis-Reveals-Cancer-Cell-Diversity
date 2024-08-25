@@ -1,0 +1,480 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+install.packages("Seurat")
+library(Seurat)
+library(ggplot2)
+install.packages("tidyverse")
+library(tidyverse)
+library(gridExtra)
+library(Matrix)
+library(harmony)
+```
+```{r}
+BM150 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp/Rar$DR00.563//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.750//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.203//barcodes.tsv")
+
+BM152 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.390//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.564//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.984//barcodes.tsv")
+
+BM156 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.565//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.422//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.484//barcodes.tsv")
+
+BM157 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.282//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.766//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.969//barcodes.tsv")
+
+BM158 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.891//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.859//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.547//barcodes.tsv")
+
+GM136 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.453//GSM5005048_GM136_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.375//GSM5005048_GM136_genes.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.531//GSM5005048_GM136_barcodes.tsv")
+
+GM143 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.767//GSM5005049_GM143_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.610//GSM5005049_GM143_genes.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.656//GSM5005049_GM143_barcodes.tsv")
+
+GM144 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.344//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.454//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.546//barcodes.tsv")
+
+GM147 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.437//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.188//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.109//barcodes.tsv")
+
+GM148 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.376//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.548//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.751//barcodes.tsv")
+
+GM183 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.313//GSM5005053_GM183_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.485//GSM5005053_GM183_genes.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.797//GSM5005053_GM183_barcodes.tsv")
+
+GM184a <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.578//GSM5005054_GM184a_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.657//GSM5005054_GM184a_genes.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.765//GSM5005054_GM184a_barcodes.tsv")
+
+GM238 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.844//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.345//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.281//barcodes.tsv")
+
+GM241 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.812//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.532//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.078//barcodes.tsv")
+
+GM242 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.346//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp/Rar$DR00.391//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.875//barcodes.tsv")
+
+BM165 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.406//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.250//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.781//barcodes.tsv")
+
+BM168 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.314//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.312//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.922//barcodes.tsv")
+
+BM169 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.486//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.703//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.283//barcodes.tsv")
+
+GM169 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.704//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.562//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.328//barcodes.tsv")
+
+GM283 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.296//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.204//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.705//barcodes.tsv")
+
+GM289 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.315//matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.688//features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.251//barcodes.tsv")
+
+oscc <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.706//GSM6634869_OSCC_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.689//GSM6634869_OSCC_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.549//GSM6634869_OSCC_barcodes.tsv")
+
+scB1 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.937//GSM6634870_scB1_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.392//GSM6634870_scB1_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.798//GSM6634870_scB1_barcodes.tsv")
+
+scB2 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.094//GSM6634871_scB2_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.566//GSM6634871_scB2_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.768//GSM6634871_scB2_barcodes.tsv")
+
+scB5 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.719//GSM6634872_scB5_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.219//GSM6634872_scB5_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.359//GSM6634872_scB5_barcodes.tsv")
+
+scB7 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.533//GSM6634873_scB7_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.720//GSM6634873_scB7_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.377//GSM6634873_scB7_barcodes.tsv")
+
+scB8 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.423//GSM6634874_scB8_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.329//GSM6634874_scB8_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.640//GSM6634874_scB8_barcodes.tsv")
+
+scB9 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.330//GSM6634875_scB9_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.284//GSM6634875_scB9_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.393//GSM6634875_scB9_barcodes.tsv")
+
+scB10 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.331//GSM6634876_scB10_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.407//GSM6634876_scB10_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.000//GSM6634876_scB10_barcodes.tsv")
+
+scB12 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.707//GSM6634877_scB12_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.769//GSM6634877_scB12_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.534//GSM6634877_scB12_barcodes.tsv")
+
+scB13 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.156//GSM6634878_scB13_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.347//GSM6634878_scB13_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.332//GSM6634878_scB13_barcodes.tsv")
+
+scB14 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.286//GSM6634879_scB14_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.285//GSM6634879_scB14_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.567//GSM6634879_scB14_barcodes.tsv")
+
+scB15 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.487//GSM6634880_scB15_matrix.mtx", features = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.394//GSM6634880_scB15_features.tsv", cells = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.348//GSM6634880_scB15_barcodes.tsv")
+```
+
+```{r}
+BM150_seurat <- CreateSeuratObject(counts = BM150, project = "BM150_seurat", min.cells = 3, min.features = 200)
+BM150_seurat
+
+BM152_seurat <- CreateSeuratObject(counts = BM152, project = "BM152_seurat", min.cells = 3, min.features = 200)
+BM152_seurat
+
+BM156_seurat <- CreateSeuratObject(counts = BM156, project = "BM156_seurat", min.cells = 3, min.features = 200)
+BM156_seurat
+
+BM157_seurat <- CreateSeuratObject(counts = BM157, project = "BM157_seurat", min.cells = 3, min.features = 200)
+BM157_seurat
+
+BM158_seurat <- CreateSeuratObject(counts = BM158, project = "BM158_seurat", min.cells = 3, min.features = 200)
+BM158_seurat
+
+GM136_seurat <- CreateSeuratObject(counts = GM136, project = "GM136_seurat", min.cells = 3, min.features = 200)
+GM136_seurat
+
+GM143_seurat <- CreateSeuratObject(counts = GM143, project = "GM143_seurat", min.cells = 3, min.features = 200)
+GM143_seurat
+
+GM144_seurat <- CreateSeuratObject(counts = GM144, project = "GM144_seurat", min.cells = 3, min.features = 200)
+GM144_seurat
+
+GM147_seurat <- CreateSeuratObject(counts = GM147, project = "GM147_seurat", min.cells = 3, min.features = 200)
+GM147_seurat
+
+GM148_seurat <- CreateSeuratObject(counts = GM148, project = "GM148_seurat", min.cells = 3, min.features = 200)
+GM148_seurat
+
+GM183_seurat <- CreateSeuratObject(counts = GM183, project = "GM183_seurat", min.cells = 3, min.features = 200)
+GM183_seurat
+
+GM184a_seurat <- CreateSeuratObject(counts = GM184a, project = "GM184a_seurat", min.cells = 3, min.features = 200)
+GM184a_seurat
+
+GM238_seurat <- CreateSeuratObject(counts = GM238, project = "GM238_seurat", min.cells = 3, min.features = 200)
+GM238_seurat
+
+GM241_seurat <- CreateSeuratObject(counts = GM241, project = "GM241_seurat", min.cells = 3, min.features = 200)
+GM241_seurat
+
+GM242_seurat <- CreateSeuratObject(counts = GM242, project = "GM242_seurat", min.cells = 3, min.features = 200)
+GM242_seurat
+
+BM165_seurat <- CreateSeuratObject(counts = BM165, project = "BM165_seurat", min.cells = 3, min.features = 200)
+BM165_seurat
+
+BM168_seurat <- CreateSeuratObject(counts = BM168, project = "BM168_seurat", min.cells = 3, min.features = 200)
+BM168_seurat
+
+BM169_seurat <- CreateSeuratObject(counts = BM169, project = "BM169_seurat", min.cells = 3, min.features = 200)
+BM169_seurat
+
+GM169_seurat <- CreateSeuratObject(counts = GM169, project = "GM169_seurat", min.cells = 3, min.features = 200)
+GM169_seurat
+
+GM283_seurat <- CreateSeuratObject(counts = GM283, project = "GM283_seurat", min.cells = 3, min.features = 200)
+GM283_seurat
+
+GM289_seurat <- CreateSeuratObject(counts = GM289, project = "GM289_seurat", min.cells = 3, min.features = 200)
+GM289_seurat
+
+oscc_seurat <- CreateSeuratObject(counts = oscc, project = "oscc_seurat", min.cells = 3, min.features = 200)
+oscc_seurat
+
+scB1_seurat <- CreateSeuratObject(counts = scB1, project = "scB1_seurat", min.cells = 3, min.features = 200)
+scB1_seurat
+
+scB2_seurat <- CreateSeuratObject(counts = scB2, project = "scB2_seurat", min.cells = 3, min.features = 200)
+scB2_seurat
+
+scB5_seurat <- CreateSeuratObject(counts = scB5, project = "scB5_seurat", min.cells = 3, min.features = 200)
+scB5_seurat
+
+scB7_seurat <- CreateSeuratObject(counts = scB7, project = "scB7_seurat", min.cells = 3, min.features = 200)
+scB7_seurat
+
+scB8_seurat <- CreateSeuratObject(counts = scB8, project = "scB8_seurat", min.cells = 3, min.features = 200)
+scB8_seurat
+
+scB9_seurat <- CreateSeuratObject(counts = scB9, project = "scB9_seurat", min.cells = 3, min.features = 200)
+scB9_seurat
+
+scB10_seurat <- CreateSeuratObject(counts = scB10, project = "scB10_seurat", min.cells = 3, min.features = 200)
+scB10_seurat
+
+scB12_seurat <- CreateSeuratObject(counts = scB12, project = "scB12_seurat", min.cells = 3, min.features = 200)
+scB12_seurat
+
+scB13_seurat <- CreateSeuratObject(counts = scB13, project = "scB13_seurat", min.cells = 3, min.features = 200)
+scB13_seurat
+
+scB14_seurat <- CreateSeuratObject(counts = scB14, project = "scB14_seurat", min.cells = 3, min.features = 200)
+scB14_seurat
+
+scB15_seurat <- CreateSeuratObject(counts = scB15, project = "scB15_seurat", min.cells = 3, min.features = 200)
+scB15_seurat
+```
+```{r}
+all_integrated <- merge(BM150_seurat, y=c(BM152_seurat, BM156_seurat, BM157_seurat, BM158_seurat, GM136_seurat, GM143_seurat, GM144_seurat, GM147_seurat, GM148_seurat, GM183_seurat, GM184a_seurat, GM238_seurat, GM241_seurat, GM242_seurat, BM165_seurat, BM168_seurat, BM169_seurat, GM169_seurat, GM283_seurat, GM289_seurat, oscc_seurat, scB1_seurat, scB2_seurat, scB5_seurat, scB7_seurat, scB8_seurat, scB9_seurat, scB10_seurat, scB12_seurat, scB13_seurat, scB14_seurat, scB15_seurat))
+all_integrated
+```
+```{r}
+all_integrated[["percent.mt"]] <- PercentageFeatureSet(all_integrated, 
+                                           pattern = "^MT-")
+View(all_integrated@meta.data)
+
+VlnPlot(all_integrated, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
+```
+```{r}
+# FeatureScatter is typically used to visualize feature-feature relationships, but can be used
+# for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
+plot_1 <- FeatureScatter(all_integrated, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot_2 <- FeatureScatter(all_integrated, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+preqc <- plot_1 + plot_2
+ggsave(plot = preqc, filename = "D:\\Shruti\\cancer\\preqc.png", units = "in", height = 15, width = 20, dpi = 900)
+preqc
+```
+```{r}
+all_integrated <- subset(all_integrated, subset = nFeature_RNA > 200 & nFeature_RNA < 6000 & percent.mt < 25)
+View(all_integrated@meta.data)
+
+plot_3 <- FeatureScatter(all_integrated, feature1 = "nCount_RNA", feature2 = "percent.mt")
+plot_4 <- FeatureScatter(all_integrated, feature1 = "nCount_RNA", feature2 = "nFeature_RNA")
+postqc <- plot_3 + plot_4
+ggsave(plot = postqc, filename = "D:\\Shruti\\cancer\\postqc.png", units = "in", height = 15, width = 20, dpi = 900)
+postqc
+```
+```{r}
+#Normalization
+all_integrated <- NormalizeData(all_integrated, normalization.method = "LogNormalize", scale.factor = 10000)
+
+#Identifying Highly Variable genes
+all_integrated <- FindVariableFeatures(all_integrated, selection.method = "vst", nfeatures = 2000)
+
+# Identify the 10 most highly variable genes
+top10 <- head(VariableFeatures(all_integrated), 10)
+top10
+
+# plot variable features with and without labels
+plot_VF1 <- VariableFeaturePlot(all_integrated)
+plot__VF2 <- LabelPoints(plot = plot_VF1, points = top10, repel = TRUE, xnudge = 0, ynudge = 0)
+plot_VF1
+Variablefeatures <- plot__VF2
+ggsave(plot = Variablefeatures, filename = "D:\\Shruti\\cancer\\hvg.png", units = "in", height = 15, width = 20, dpi = 900)
+Variablefeatures
+```
+```{r}
+#Scaling the data
+all_genes_merged <- rownames(all_integrated)
+all_integrated <- ScaleData(all_integrated, features = all_genes_merged)
+
+all_integrated <- ScaleData(all_integrated, vars.to.regress = "percent.mt") #removes unwanted sources of variation
+```
+
+```{r}
+#Linear dimension Reduction
+all_integrated <- RunPCA(all_integrated, features = VariableFeatures(object = all_integrated))
+print(all_integrated[["pca"]], dims = 1:10, nfeatures = 5)
+```
+```{r}
+pca <- VizDimLoadings(all_integrated, dims = 1:2, reduction = "pca")
+ggsave(plot = pca, filename = "D:\\Shruti\\cancer\\pca.png", units = "in", height = 15, width = 20, dpi = 900)
+pca
+```
+```{r}
+pca_12 <- DimPlot(all_integrated, reduction = "pca") + NoLegend() # plot will show each cell positioned in the space defined by the first two principal components
+ggsave(plot = pca_12, filename = "D:\\Shruti\\cancer\\pca_12.png", units = "in", height = 15, width = 20, dpi = 900)
+pca_12
+```
+```{r}
+ElbowPlot(all_integrated)
+```
+```{r}
+pc1_heatmap <- DimHeatmap(all_integrated, dims = 1, cells = 500, balanced = TRUE)
+ggsave(plot = pc1_heatmap, filename = "D:\\Shruti\\cancer\\pca_1_heatmap.png" , units = "in", height = 15, width = 20, dpi = 900)
+pc1_heatmap
+```
+```{r}
+#Run non-linear dimensional redution
+all_integrated <- RunUMAP(all_integrated, dims = 1:20)
+
+#Cluster the cells
+all_integrated <- FindNeighbors(all_integrated, dims = 1:20)
+all_integrated <- FindClusters(all_integrated, resolution = c(0.5, 0.3, 0.1))
+```
+```{r}
+all_integrated <- FindClusters(all_integrated, resolution = 0.1)
+
+all_integrated_before <- DimPlot(all_integrated, group.by = c("orig.ident", "seurat_clusters"), ncol = 2)
+ggsave(plot = all_integrated_before, filename = "D:\\Shruti\\cancer\\all_integrated_before.png", units = "in", height = 15, width = 20, dpi = 900)
+all_integrated_before
+
+```
+```{r}
+all_integrated_0.8 <- FindClusters(all_integrated, resolution = 0.08)
+
+all_integrated_before_0.8 <- DimPlot(all_integrated_0.8, group.by = c("orig.ident", "seurat_clusters"), ncol = 2)
+ggsave(plot = all_integrated_before_0.8, filename = "D:\\Shruti\\cancer\\all_integrated_before_0.8.png", units = "in", height = 15, width = 20, dpi = 900)
+all_integrated_before_0.8
+
+```
+```{r}
+all_integrated_before_orig.ident <- DimPlot(all_integrated, group.by = "orig.ident")
+all_integrated_before_seuratcluster <- DimPlot(all_integrated, group.by =  "seurat_clusters")
+ggsave(plot = all_integrated_before_orig.ident, filename = "D:\\Shruti\\cancer\\all_integrated_before_orig.ident.png", units = "in", height = 15, width = 20, dpi = 900)
+all_integrated_before_orig.ident
+ggsave(plot = all_integrated_before_seuratcluster, filename = "D:\\Shruti\\cancer\\all_integrated_before_seurat_cluster.png", units = "in", height = 15, width = 20, dpi = 900)
+
+```
+
+```{r}
+all_integrated_HAR <- NormalizeData(all_integrated)
+all_integrated_HAR <- FindVariableFeatures(all_integrated_HAR)
+all_integrated_HAR <- ScaleData(all_integrated_HAR)
+all_integrated_HAR <- RunPCA(all_integrated_HAR, verbose = FALSE)
+all_integrated_HAR <- RunHarmony(all_integrated_HAR, group.by.vars = "orig.ident")
+```
+```{r}
+all_integrated_HAR <- RunUMAP(all_integrated_HAR, reduction = "harmony", dims = 1:20)
+```
+```{r}
+all_integrated_HAR <- FindNeighbors(all_integrated_HAR, reduction = "harmony", dims = 1:20)
+all_integrated_HAR <- FindClusters(all_integrated_HAR, resolution = 0.01)
+
+all_integrated_HAR <- FindNeighbors(all_integrated_HAR, reduction = "harmony", dims = 1:20)
+all_integrated_HAR <- FindClusters(all_integrated_HAR, resolution = 0.06)
+```
+```{r}
+all_integrated_HAR_after_orig.ident1 <- DimPlot(all_integrated_HAR, group.by = "orig.ident")
+all_integrated_HAR_after_seuratcluster1 <- DimPlot(all_integrated_HAR, group.by = "seurat_clusters")
+
+ggsave(plot = all_integrated_HAR_after_orig.ident1, filename = "D:\\Shruti\\cancer\\all_integrated_after_orig.ident1.png", units = "in", height = 15, width = 20, dpi = 900)
+ggsave(plot = all_integrated_HAR_after_seuratcluster1, filename = "D:\\Shruti\\cancer\\all_integrated_after_seuratcluster1.png", units = "in", height = 15, width = 20, dpi = 900)
+all_integrated_HAR_after_orig.ident1
+all_integrated_HAR_after_seuratcluster1
+```
+```{r}
+all_integrated_before_orig.ident|all_integrated_HAR_after_orig.ident
+```
+```{r}
+saveRDS(all_integrated_HAR, file = "D:\\Shruti\\cancer\\INTEGRATION.rds")
+```
+
+```{r}
+view(all_integrated_HAR@meta.data)
+```
+
+```{r}
+all_integrated_HAR_0.1 <- FindClusters(all_integrated_HAR, resolution = 0.1)
+all_integrated_HAR_0.08 <- FindClusters(all_integrated_HAR, resolution = 0.08)
+all_integrated_HAR_0.06 <- FindClusters(all_integrated_HAR, resolution = 0.06)
+all_integrated_HAR_0.05F <- FindClusters(all_integrated_HAR, resolution = 0.05)
+```
+```{r}
+
+all_integrated_HAR<- RunUMAP(all_integrated_HAR, dims = 1:20)
+all_integrated_HAR_0.1 <- DimPlot(all_integrated_HAR_0.1, reduction = "umap")
+all_integrated_HAR_0.1
+```
+```{r}
+all_integrated_HAR<- RunUMAP(all_integrated_HAR, dims = 1:20)
+all_integrated_HAR_0.05F <- DimPlot(all_integrated_HAR_0.05F, reduction = "umap")
+all_integrated_HAR_0.05F
+```
+
+
+```{r}
+all_integrated_HAR_0.08 <- DimPlot(all_integrated_HAR_0.08, reduction = "umap")
+all_integrated_HAR_0.08
+```
+```{r}
+all_integrated_HAR_0.06 <- FindClusters(all_integrated_HAR, resolution = 0.06)
+all_integrated_HAR<- RunUMAP(all_integrated_HAR, dims = 1:20)
+
+all_integrated_HAR_0.06 <- DimPlot(all_integrated_HAR_0.06, reduction = "umap")
+all_integrated_HAR_0.06
+```
+```{r}
+
+```
+
+
+```{r}
+all_integrated_HAR_0.03 <- FindClusters(all_integrated_HAR, resolution = 0.03)
+all_integrated_HAR_0.03 <- DimPlot(all_integrated_HAR_0.03, reduction = "umap")
+all_integrated_HAR_0.03
+```
+```{r}
+saveRDS(all_integrated_HAR, file = "D:\\Shruti\\cancer\\INTEGRATION.rds")
+```
+
+```{r}
+# find markers for every cluster compared to all remaining cells, report only the positive
+# ones
+all_integrated_HAR <- JoinLayers(all_integrated_HAR)
+all_integrated_HAR_markers <- FindAllMarkers(all_integrated_HAR, only.pos = TRUE)
+
+
+all_integrated_HAR_markers %>%
+    group_by(cluster) %>%
+    dplyr::filter(avg_log2FC > 1)
+```
+```{r}
+all_integrated_HAR <- RunUMAP(all_integrated_HAR, reduction = "harmony", dims = 1:20)
+all_integrated_HAR <- FindNeighbors(all_integrated_HAR, reduction = "harmony", dims = 1:20)
+all_integrated_HAR <- FindClusters(all_integrated_HAR, resolution = 0.06)
+all_integrated_HAR <- RunUMAP(all_integrated_HAR, dims = 1:20)
+all_integrated_HAR <- DimPlot(all_integrated_HAR, reduction = "umap")
+all_integrated_HAR
+
+all_integrated_HAR_0.06 <- FindClusters(all_integrated_HAR, resolution = 0.06)
+all_integrated_HAR<- RunUMAP(all_integrated_HAR, dims = 1:20)
+
+all_integrated_HAR_0.06 <- DimPlot(all_integrated_HAR_0.06, reduction = "umap")
+all_integrated_HAR_0.06
+```
+```{r}
+FeaturePlot(all_integrated_HAR, features = c('CD14'), min.cutoff = 'q10')
+
+```
+```{r}
+feature_plot <- FeaturePlot(all_integrated_HAR, features = c('CD14','CD3D','KRT5','THY1','CD79A','VWF','MS4A2','IL3RA'))
+feature_plot 
+ggsave(plot = feature_plot, filename = "D:\\Shruti\\cancer\\feature_plot.png", units = "in", height = 15, width = 20, dpi = 900)
+
+
+```
+
+
+```{r}
+dot_plot <- DotPlot(all_integrated_HAR, features = c('CD14','CD3D','KRT5','THY1','CD79A','VWF','MS4A2','IL3RA'))
+ggsave(plot = dot_plot, filename = "D:\\Shruti\\cancer\\dot_plot.png", units = "in", height = 15, width = 20, dpi = 900)
+dot_plot
+
+
+```
+```{r}
+# Perform differential expression analysis
+all_integrated_HAR_markers_DE <- FindAllMarkers(all_integrated_HAR, only.pos = TRUE, min.pct = 0.25, logfc.threshold = 0.25)
+
+# find markers for every cluster compared to all remaining cells, report only the positive
+# ones
+all_integrated_HAR <- JoinLayers(all_integrated_HAR)
+all_integrated_HAR_markers_DE <- FindAllMarkers(all_integrated_HAR, only.pos = TRUE)
+
+
+filtered_markers <- all_integrated_HAR_markers_DE %>%
+    group_by(cluster) %>%
+    dplyr::filter(avg_log2FC > 1)
+filtered_markers
+
+```
+
+```{r}
+write.csv(filtered_markers, "D:\\Shruti\\cancer\\filtered_markers.csv")
+```
+
+```{r}
+top10 <- filtered_markers %>% 
+  group_by(cluster) %>% 
+  top_n(10, avg_log2FC)
+write.csv(top10, "D:\\Shruti\\cancer\\top10.csv")
+
+DoHeatmap(object = all_integrated_HAR , features = top10$gene, label = TRUE)
+```
+```{r}
+# Plot heatmap
+library(ComplexHeatmap)
+install.packages("RColorBrewer")
+library("RColorBrewer")
+
+# Set up the heatmap
+ht_opt = HeatmapAnnotation(
+  df = data.frame(cluster = top10$cluster),
+  which = "row",
+  col = list(cluster = c("1" = "red", "2" = "blue", "3" = "green")) # Change colors as needed
+)
+
+# Create a numeric matrix from the expression data
+expression_matrix <- as.matrix(top10)
+
+# Plot the heatmap
+Heatmap(expression_matrix,
+        name = "Expression",
+        col = colorRamp2(c(-1, 0, 1), c("blue", "white", "red")), # Adjust color scale
+        top_annotation = ht_opt)
+
+Heatmap(top10, 
+        name = "Expression", 
+        col = colorRamp2(c(-1, 0, 1), c("blue", "white", "red")), # Adjust color scale
+        top_annotation = ht_opt)
+```
+
