@@ -10,7 +10,6 @@ To get started with this project, you need to have R and RStudio installed on yo
 2. **Install RStudio**: Download and install RStudio from [RStudio's website](https://www.rstudio.com/products/rstudio/download/).
 
 Once R and RStudio are installed, you can install the required packages by running the following commands in your R console:
-r
 
 ## Install Seurat
 install.packages("Seurat")
