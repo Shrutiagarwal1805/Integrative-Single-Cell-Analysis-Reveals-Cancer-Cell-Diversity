@@ -83,6 +83,7 @@ scB15 <- ReadMtx(mtx = "C://Users//LAB20//AppData//Local//Temp//Rar$DR00.487//GS
 ```
 
 ```{r}
+#Create Seurat Objects
 BM150_seurat <- CreateSeuratObject(counts = BM150, project = "BM150_seurat", min.cells = 3, min.features = 200)
 BM150_seurat
 
@@ -183,10 +184,12 @@ scB15_seurat <- CreateSeuratObject(counts = scB15, project = "scB15_seurat", min
 scB15_seurat
 ```
 ```{r}
+#Merge all seurat objects
 all_integrated <- merge(BM150_seurat, y=c(BM152_seurat, BM156_seurat, BM157_seurat, BM158_seurat, GM136_seurat, GM143_seurat, GM144_seurat, GM147_seurat, GM148_seurat, GM183_seurat, GM184a_seurat, GM238_seurat, GM241_seurat, GM242_seurat, BM165_seurat, BM168_seurat, BM169_seurat, GM169_seurat, GM283_seurat, GM289_seurat, oscc_seurat, scB1_seurat, scB2_seurat, scB5_seurat, scB7_seurat, scB8_seurat, scB9_seurat, scB10_seurat, scB12_seurat, scB13_seurat, scB14_seurat, scB15_seurat))
 all_integrated
 ```
 ```{r}
+#Quality Control
 all_integrated[["percent.mt"]] <- PercentageFeatureSet(all_integrated, 
                                            pattern = "^MT-")
 View(all_integrated@meta.data)
@@ -296,6 +299,7 @@ ggsave(plot = all_integrated_before_seuratcluster, filename = "D:\\Shruti\\cance
 ```
 
 ```{r}
+#Run Harmony
 all_integrated_HAR <- NormalizeData(all_integrated)
 all_integrated_HAR <- FindVariableFeatures(all_integrated_HAR)
 all_integrated_HAR <- ScaleData(all_integrated_HAR)
@@ -306,6 +310,7 @@ all_integrated_HAR <- RunHarmony(all_integrated_HAR, group.by.vars = "orig.ident
 all_integrated_HAR <- RunUMAP(all_integrated_HAR, reduction = "harmony", dims = 1:20)
 ```
 ```{r}
+#Find Clusters at different resolutions
 all_integrated_HAR <- FindNeighbors(all_integrated_HAR, reduction = "harmony", dims = 1:20)
 all_integrated_HAR <- FindClusters(all_integrated_HAR, resolution = 0.01)
 
@@ -325,6 +330,7 @@ all_integrated_HAR_after_seuratcluster1
 all_integrated_before_orig.ident|all_integrated_HAR_after_orig.ident
 ```
 ```{r}
+#Save the RDS file
 saveRDS(all_integrated_HAR, file = "D:\\Shruti\\cancer\\INTEGRATION.rds")
 ```
 
@@ -443,38 +449,12 @@ write.csv(filtered_markers, "D:\\Shruti\\cancer\\filtered_markers.csv")
 ```
 
 ```{r}
+#Differential Gene Expression
 top10 <- filtered_markers %>% 
   group_by(cluster) %>% 
   top_n(10, avg_log2FC)
 write.csv(top10, "D:\\Shruti\\cancer\\top10.csv")
 
 DoHeatmap(object = all_integrated_HAR , features = top10$gene, label = TRUE)
-```
-```{r}
-# Plot heatmap
-library(ComplexHeatmap)
-install.packages("RColorBrewer")
-library("RColorBrewer")
-
-# Set up the heatmap
-ht_opt = HeatmapAnnotation(
-  df = data.frame(cluster = top10$cluster),
-  which = "row",
-  col = list(cluster = c("1" = "red", "2" = "blue", "3" = "green")) # Change colors as needed
-)
-
-# Create a numeric matrix from the expression data
-expression_matrix <- as.matrix(top10)
-
-# Plot the heatmap
-Heatmap(expression_matrix,
-        name = "Expression",
-        col = colorRamp2(c(-1, 0, 1), c("blue", "white", "red")), # Adjust color scale
-        top_annotation = ht_opt)
-
-Heatmap(top10, 
-        name = "Expression", 
-        col = colorRamp2(c(-1, 0, 1), c("blue", "white", "red")), # Adjust color scale
-        top_annotation = ht_opt)
 ```
 
