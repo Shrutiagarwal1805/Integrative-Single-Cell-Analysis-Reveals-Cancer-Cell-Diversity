@@ -18,3 +18,7 @@ install.packages("Seurat")
 ## Install Harmony
 devtools::install_github("immunogenomics/harmony", build_vignettes=TRUE)
 
+## Datasets Used
+The following datasets were used for integration:
+1) Human oral mucosa cell atlas reveals a stromal-neutrophil axis regulating tissue immunity- GSE164241
+2) scRNA seq of the oral squamous cell carcinoma gingivo-buccal (OSCC-GB) - GSE215403
