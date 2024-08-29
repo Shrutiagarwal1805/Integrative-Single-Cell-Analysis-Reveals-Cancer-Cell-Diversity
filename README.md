@@ -1,7 +1,7 @@
 # Single-cell RNA Data Integration using Seurat and Harmony
 
 This project focuses on integrating single-cell RNA sequencing data using the Seurat and Harmony packages in R. Single-cell RNA sequencing allows for the exploration of cellular heterogeneity, and data integration is crucial for combining datasets from different experiments or conditions. Seurat is a popular R package for single-cell data analysis, and Harmony is used for batch correction and data integration. This project demonstrates how to effectively integrate multiple datasets to achieve a unified analysis.
-2. Installation Instructions
+
 ## Installation
 
 To get started with this project, you need to have R and RStudio installed on your system. Follow these steps to set up the environment:
